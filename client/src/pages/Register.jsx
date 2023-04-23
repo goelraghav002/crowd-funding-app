@@ -14,6 +14,7 @@ const Register = () => {
   const [form, setForm] = useState({
     name: '',
     email: '',
+    password: '',
     description: '',
     govIdType: '', 
     govIdNumber: '',
@@ -53,9 +54,16 @@ const Register = () => {
           <FormField 
             labelName="Email Id *"
             placeholder="example@example.com"
-            inputType="Email"
+            inputType="email"
             value={form.email}
             handleChange={(e) => handleFormFieldChange('email', e)}
+          />
+          <FormField 
+            labelName="Password *"
+            placeholder="Your Password"
+            inputType="password"
+            value={form.password}
+            handleChange={(e) => handleFormFieldChange('password', e)}
           />
         </div>
 

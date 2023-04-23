@@ -61,9 +61,9 @@ const Login = () => {
             title="login"
             styles="bg-[#1dc071]"
           />
-          <link  href="./">
+          {/* <link  href="./">
           register
-        </link>
+        </link> */}
         </div>
       </form>
     </div>
