@@ -53,7 +53,7 @@ const Profile = () => {
 
       </div>
       <DisplayCampaigns 
-        title="All Campaigns"
+        title="User Campaigns"
         isLoading={isLoading}
         campaigns={campaigns}
       />
