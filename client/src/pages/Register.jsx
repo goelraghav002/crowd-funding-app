@@ -1,16 +1,14 @@
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom';
-import { ethers } from 'ethers';
+import { Navigate, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { useStateContext } from '../context';
-import { money } from '../assets';
 import { CustomButton, FormField, Loader } from '../components';
-import { checkIfImage } from '../utils';
+import { signup } from '../actions/user.actions';
 
 const Register = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
-  const { createCampaign } = useStateContext();
   const [form, setForm] = useState({
     name: '',
     email: '',
@@ -26,14 +24,37 @@ const Register = () => {
     setForm({ ...form, [fieldName]: e.target.value })
   }
 
+  const dispatch = useDispatch();
+	const auth = useSelector((state) => state.auth);
+	const user = useSelector((state) => state.user);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    alert('submitted');
-    // alert(form)
-    console.log(form);
+    const userDetails = {
+			name: form.name,
+			email: form.email,
+			password: form.password,
+			description: form.description,
+      govIdType: form.govIdType,
+      govIdNumber: form.govIdNumber,
+      contact1: form.contact1,
+      contact2: form.contact2,
+    };
+    
+    dispatch(signup(userDetails));
+    return <Navigate to={'/'} replace />
   
   }
+
+  if (auth.authenticate) {
+		return <Navigate to={`/`} replace />;
+  }
+  
+  if (user.loading) {
+		// toast.success('Signup Successful!, Please login to continue...');
+		return <Navigate to={`/login`} replace />;
+	}
 
   return (
     <div className="bg-[#1c1c24] flex justify-center items-center flex-col rounded-[10px] sm:p-10 p-4">
@@ -117,7 +138,7 @@ const Register = () => {
           <div className="flex justify-center items-center mt-[40px]">
             <CustomButton 
               btnType="submit"
-              title="Submit new campaign"
+              title="Register"
               styles="bg-[#1dc071]"
             />
           </div>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { ethers } from 'ethers';
 
 import { useStateContext } from '../context';
@@ -8,6 +8,7 @@ import { CustomButton, FormField, Loader } from '../components';
 import { checkIfImage } from '../utils';
 
 const CreateCampaign = () => {
+  const token = window.localStorage.getItem('token');
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const { createCampaign } = useStateContext();
@@ -19,6 +20,10 @@ const CreateCampaign = () => {
     deadline: '',
     image: ''
   });
+
+  if (!token){
+    return <Navigate to="/login" replace />
+  }
 
   const handleFormFieldChange = (fieldName, e) => {
     setForm({ ...form, [fieldName]: e.target.value })

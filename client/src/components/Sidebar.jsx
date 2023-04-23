@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
-import { logo, sun } from '../assets';
+import { logo, logout, sun } from '../assets';
 import { navlinks } from '../constants';
+import { signout } from '../actions';
 
 const Icon = ({ styles, name, imgUrl, isActive, disabled, handleClick }) => (
   <div className={`w-[48px] h-[48px] rounded-[10px] ${isActive && isActive === name && 'bg-[#2c2f32]'} flex justify-center items-center ${!disabled && 'cursor-pointer'} ${styles}`} onClick={handleClick}>
@@ -15,9 +17,15 @@ const Icon = ({ styles, name, imgUrl, isActive, disabled, handleClick }) => (
 )
 
 const Sidebar = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isActive, setIsActive] = useState('dashboard');
-
+  
+  const handleLogout = () => {
+    dispatch(signout());
+    <Navigate to='/login' replace />
+  };
+  
   return (
     <div className="flex justify-between items-center flex-col sticky top-5 h-[93vh]">
       <Link to="/">
@@ -39,6 +47,14 @@ const Sidebar = () => {
               }}
             />
           ))}
+
+          <div className={`w-[48px] h-[48px] rounded-[10px] grayscale flex justify-center items-center`} onClick={handleLogout}>
+            
+              <img src={logout} alt="fund_logo" className="w-1/2 h-1/2" />
+            
+              {/* <img src={imgUrl} alt="fund_logo" className={`w-1/2 h-1/2 ${isActive !== name && 'grayscale'}`} /> */}
+            
+          </div>
         </div>
 
         <Icon styles="bg-[#1c1c24] shadow-secondary" imgUrl={sun} />

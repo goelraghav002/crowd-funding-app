@@ -2,8 +2,11 @@ import React, { useState, useEffect } from 'react'
 
 import { DisplayCampaigns } from '../components';
 import { useStateContext } from '../context'
+import { Navigate } from 'react-router-dom';
 
 const Profile = () => {
+  
+  const token = window.localStorage.getItem('token');
   const [isLoading, setIsLoading] = useState(false);
   const [campaigns, setCampaigns] = useState([]);
 
@@ -14,6 +17,10 @@ const Profile = () => {
     const data = await getUserCampaigns();
     setCampaigns(data);
     setIsLoading(false);
+  }
+
+  if (!token){
+    return <Navigate to="/login" replace />
   }
 
   useEffect(() => {

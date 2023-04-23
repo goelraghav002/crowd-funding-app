@@ -1,16 +1,16 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-// import { ethers } from "ethers";
+import { Navigate, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
-import { useStateContext } from "../context";
-// import { money } from "../assets";
 import { CustomButton, FormField, Loader } from "../components";
-// import { checkIfImage } from "../utils";
+import { login } from '../actions';
 
 const Login = () => {
+  const dispatch = useDispatch();
+	const auth = useSelector((state) => state.auth);
+
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
-  const { createCampaign } = useStateContext();
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -22,7 +22,18 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const user = {
+			email: form.email,
+			password: form.password,
+		};
+
+		dispatch(login(user));
   };
+
+  if (auth.authenticate) {
+		return <Navigate to={`/`} replace />;
+	}
 
   return (
     <div className="bg-[#1c1c24] flex justify-center items-center flex-col rounded-[10px] sm:p-10 p-4">
@@ -50,6 +61,7 @@ const Login = () => {
         <FormField
           labelName="Password *"
           placeholder="your password"
+          inputType="password"
           value={form.password}
           handleChange={(e) => handleFormFieldChange("password", e)}
         />
@@ -58,12 +70,9 @@ const Login = () => {
           <CustomButton
             className=""
             btnType="submit"
-            title="login"
+            title="Login"
             styles="bg-[#1dc071]"
           />
-          {/* <link  href="./">
-          register
-        </link> */}
         </div>
       </form>
     </div>

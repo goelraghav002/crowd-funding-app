@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { ethers } from 'ethers';
 
 import { useStateContext } from '../context';
@@ -8,6 +8,8 @@ import { calculateBarPercentage, daysLeft } from '../utils';
 import { thirdweb } from '../assets';
 
 const CampaignDetails = () => {
+  
+  const token = window.localStorage.getItem('token');
   const { state } = useLocation();
   const navigate = useNavigate();
   const { donate, getDonations, contract, address } = useStateContext();
@@ -22,6 +24,10 @@ const CampaignDetails = () => {
     const data = await getDonations(state.pId);
 
     setDonators(data);
+  }
+
+  if (!token){
+    return <Navigate to="/login" replace />
   }
 
   useEffect(() => {
